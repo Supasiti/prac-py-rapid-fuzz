@@ -1,13 +1,26 @@
 def lcs_length(s1, s2):
+    # Ensure s2 is the shorter string to optimize space
+    if len(s1) < len(s2):
+        s1, s2 = s2, s1
+    
     m, n = len(s1), len(s2)
-    dp = [[0] * (n + 1) for _ in range(m + 1)]
-    for i in range(m):
-        for j in range(n):
+    
+    # dp array for the current row, initialized to all zeros
+    # dp[j] will store the LCS length of s1[:i+1] and s2[:j+1]
+    # from the previous iteration (i-1)
+    dp = [0] * (n + 1)
+
+    for i in range(m): # Iterate through s1 (longer string)
+        diag_prev = 0 # Stores dp[i][j] (value from previous row, previous column)
+        for j in range(n): # Iterate through s2 (shorter string)
+            temp = dp[j+1] # Save dp[i][j+1] (value from previous row, current column)
             if s1[i] == s2[j]:
-                dp[i + 1][j + 1] = dp[i][j] + 1
+                dp[j+1] = diag_prev + 1
             else:
-                dp[i + 1][j + 1] = max(dp[i + 1][j], dp[i][j + 1])
-    return dp[m][n]
+                dp[j+1] = max(dp[j], dp[j+1])
+            diag_prev = temp # Update diag_prev for the next column calculation
+
+    return dp[n]
 
 
 def indel_distance(s1, s2):

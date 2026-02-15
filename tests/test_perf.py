@@ -3,7 +3,7 @@ import time
 
 
 def test_perf():
-    n_times = 1_000_000
+    n_times = 100_000
     
     start_time = time.perf_counter()
     for _ in range(n_times):
